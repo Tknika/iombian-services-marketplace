@@ -35,7 +35,7 @@ Here is a fragment of the iombian-button-handler service as an example:
 ```
 services:
     iombian-button-handler:
-        image: ghcr.io/tknika/iombian-button-handler:sha-0bfb0d5
+        image: ghcr.io/tknika/iombian-button-handler:0.1.0
         container_name: iombian-button-handler
         privileged: true
         restart: unless-stopped
@@ -120,15 +120,29 @@ com.iombian-button-handler.service.name: "IoMBian button handler"
 com.iombian-button-handler.service.author: "Aitor Castaño"
 com.iombian-button-handler.service.version: "0.1.0"
 com.iombian-button-handler.service.description: "Raspberry GPIO button handler. Publishes the registered button event using ZeroMQ as the communication protocol."
+com.iombian-button-handler.service.changelog: "First release."
 ```
 
 ### Environment variables
 
-The environment variables will have some metadata in order to know what those variables are or mean.
-The environment variables here are the ones for the docker compose file, defined with ${}, not for the environment variables passed to the container, defined in the compose file.
-The environment variables defined with ${} and referenced in the labels are the ones that the user will be able to change from the user interface of the IoMBian configurator.
-There will be a group of labels for each environment variable.
-The labels will start with `com.<service-name>.env.<variable-name>`.
+The environment variables will also have some tags with metadata.
+This metadata will be used by the iombian-configurator to generate the forms needed for input.
+Like this, you can change some values of a service from the configurator.
+
+The labels will refer to the environment variables defined with ${}, not the ones in the environment section.
+This means, having this example:
+
+```
+ports:
+    - ${CONFIG_PORT:-5555}:5555
+environment:
+    RESET_EVENT: ${RESET_EVENT:-long_long_click}
+    BUTTON_EVENTS_HOST: iombian-button-handler
+    BUTTON_EVENTS_PORT: ${BUTTON_EVENTS_PORT:-5556}
+```
+
+There will be labels defined for `CONFIG_PORT`, `RESET_EVENT` and `BUTTON_EVENTS_PORT`, but not for `BUTTON_EVENTS_HOST`.
+There will be four labels for each variable and they will all start with `com.<service-name>.env.<variable-name>`.
 
 - name: The name of the variable in a more readable way.
 Without being all in uppercase, without underscores and all that.
@@ -141,7 +155,7 @@ Without being all in uppercase, without underscores and all that.
         - `"integer:0;100"`
     - "string"
         - Here you can also specify extra information with ":".
-        First you can specify if the string is going to be hidden like a password or not when shown in the iombian-configurator ui. 0 shows the string and 1 shows it.
+        First you can specify if the string is going to be hidden like a password or not when shown in the iombian-configurator ui. 0 shows the string and 1 hides it.
         After that, separated with ";" you can specify a regex the string should follow.
         You can leave it empty if no regex is needed.
         - `"string:0;"`
@@ -163,17 +177,17 @@ Here is an example of the labels of the environment variables of the iombian-but
 ```
 com.iombian-button-handler.env.BUTTON_EVENTS_PORT.name: "Button events port"
 com.iombian-button-handler.env.BUTTON_EVENTS_PORT.description: "Port for communicating button events."
-com.iombian-button-handler.env.BUTTON_EVENTS_PORT.type: "integer"
+com.iombian-button-handler.env.BUTTON_EVENTS_PORT.type: "integer:1024;65535"
 com.iombian-button-handler.env.BUTTON_EVENTS_PORT.default: 5556
 
 com.iombian-button-handler.env.BUTTON_PIN.name: "Button pin"
 com.iombian-button-handler.env.BUTTON_PIN.description: "The pin of the raspberry button."
-com.iombian-button-handler.env.BUTTON_PIN.type: "integer"
+com.iombian-button-handler.env.BUTTON_PIN.type: "integer:1;40"
 com.iombian-button-handler.env.BUTTON_PIN.default: 3
 
 com.iombian-button-handler.env.LOG_LEVEL.name: "Log level"
 com.iombian-button-handler.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
-com.iombian-button-handler.env.LOG_LEVEL.type: "string"
+com.iombian-button-handler.env.LOG_LEVEL.type: "enum:NOTSET,DEBUG,INFO,WARNING,WARN,ERROR,FATAL,CRITICAL"
 com.iombian-button-handler.env.LOG_LEVEL.default: "INFO"
 ```
 
@@ -182,7 +196,7 @@ com.iombian-button-handler.env.LOG_LEVEL.default: "INFO"
 ```
 services:
     iombian-example-service:
-        image: ghcr.io/example/image
+        image: ghcr.io/example/image:<tag>
         container_name: iombian-example-service
         restart: unless-stopped
         volumes:
@@ -194,7 +208,7 @@ services:
         environment:
             EXAMPLE_ENV: ${EXAMPLE_ENV:-default}
         labels:
-            com.iombian-example-service.service.name: "IoMian example service" 
+            com.iombian-example-service.service.name: "IoMBian example service" 
             com.iombian-example-service.service.author: "<author_name>"
             com.iombian-example-service.service.version: "0.1.0"
             com.iombian-example-service.service.description: "Example functionality of the example service"
