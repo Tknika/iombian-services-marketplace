@@ -124,6 +124,9 @@ services/iombian-button-handler/README.md
 ```
 
 Here is an example of the iombian-button-handler service:
+> [!NOTE]
+> In this example iombian-button-handler has a documentation_url, but the real one doesn't.
+> The documentation_url is added to make a better example.
 
 ```
 com.iombian-button-handler.service.name: "IoMBian button handler"
