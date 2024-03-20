@@ -112,9 +112,9 @@ The pre-release-label is optional.
 The version of the compose file and the version of the image don’t need to be the same.
 - description: A short description of the service.
 - changelog: A short description of what has changed from the previous version.
-- documentation_url: A link to a documentation of the service.
+- documentation_url: A link to the documentation of the service.
 This link can be to a markdown file on this marketplace repository or an external link.
-If a markdown file is added in the marketplace, it must be named README.md and it must be located inside of the service folder at the same level as the version folders.
+If a markdown file is added to the marketplace, it must be named README.md and be located inside the service folder at the same level as the version folders.
 If not needed, this label can be left empty, but in any case it must appear in the labels.
 
 ```
