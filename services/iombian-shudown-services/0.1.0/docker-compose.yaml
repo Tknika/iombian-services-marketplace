@@ -28,7 +28,7 @@ services:
       com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.default: 5558
 
       com.iombian-shutdown-service.env.LOG_LEVEL.name: "Log level"
-      com.iombian-shutdown-service.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
+      com.iombian-shutdown-service.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)"
       com.iombian-shutdown-service.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
       com.iombian-shutdown-service.env.LOG_LEVEL.default: "INFO"
 
