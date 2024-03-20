@@ -112,8 +112,21 @@ The pre-release-label is optional.
 The version of the compose file and the version of the image don’t need to be the same.
 - description: A short description of the service.
 - changelog: A short description of what has changed from the previous version.
+- documentation_url: A link to the documentation of the service.
+This link can be to a markdown file on this marketplace repository or an external link.
+If a markdown file is added to the marketplace, it must be named README.md and be located inside the service folder at the same level as the version folders.
+If not needed, this label can be left empty, but in any case it must appear in the labels.
+
+```
+services/iombian-button-handler/0.1.0/docker-compose.yml
+services/iombian-button-handler/0.1.1/docker-compose.yml
+services/iombian-button-handler/README.md
+```
 
 Here is an example of the iombian-button-handler service:
+> [!NOTE]
+> In this example iombian-button-handler has a documentation_url, but the real one doesn't.
+> The documentation_url is added to make a better example.
 
 ```
 com.iombian-button-handler.service.name: "IoMBian button handler"
@@ -121,6 +134,7 @@ com.iombian-button-handler.service.author: "Aitor Castaño"
 com.iombian-button-handler.service.version: "0.1.0"
 com.iombian-button-handler.service.description: "Raspberry GPIO button handler. Publishes the registered button event using ZeroMQ as the communication protocol."
 com.iombian-button-handler.service.changelog: "First release."
+com.iombian-button-handler.service.documentation_url: "https://github.com/Tknika/iombian-services-marketplace/services/iombian-button-handler/README.md"
 ```
 
 ### Environment variables
