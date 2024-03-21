@@ -1,0 +1,37 @@
+services:
+  iombian-shutdown-service:
+    image: ghcr.io/tknika/iombian-shutdown-service:0.1.0
+    container_name: iombian-shutdown-service
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - /run/systemd/system:/run/systemd/system
+      - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+      - /bin/systemctl:/bin/systemctl
+    networks:
+      - iombian-internal-services
+    ports:
+      - ${SHUTDOWN_SERVICE_PORT:-5558}:5558
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    labels:
+      com.iombian-shutdown-service.service.name: "IoMBian Shutdown Service"
+      com.iombian-shutdown-service.service.author: "Aitor Castaño"
+      com.iombian-shutdown-service.service.version: "0.1.0"
+      com.iombian-shutdown-service.service.description: "IoMBian shutdown and reboot service. Receives commands for shutting down and rebooting the device."
+      com.iombian-shutdown-service.service.changelog: "First release."
+      com.iombian-shutdown-service.service.documentation_url: ""
+
+      com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.name: "Shutdown service port"
+      com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.description: "Port where shutdown and reboot commands will be received."
+      com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.type: "integer:1024;65535"
+      com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.default: "5558"
+
+      com.iombian-shutdown-service.env.LOG_LEVEL.name: "Log level"
+      com.iombian-shutdown-service.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)"
+      com.iombian-shutdown-service.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
+      com.iombian-shutdown-service.env.LOG_LEVEL.default: "INFO"
+
+networks:
+  iombian-internal-services:
+    external: true
