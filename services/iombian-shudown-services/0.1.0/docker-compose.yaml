@@ -21,11 +21,11 @@ services:
       com.iombian-shutdown-service.service.description: "IoMBian shutdown and reboot service. Receives commands for shutting down and rebooting the device."
       com.iombian-shutdown-service.service.changelog: "First release."
       com.iombian-shutdown-service.service.documentation_url: ""
-  
+
       com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.name: "Shutdown service port"
       com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.description: "Port where shutdown and reboot commands will be received."
       com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.type: "integer:1024;65535"
-      com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.default: 5558
+      com.iombian-shutdown-service.env.SHUTDOWN_SERVICE_PORT.default: "5558"
 
       com.iombian-shutdown-service.env.LOG_LEVEL.name: "Log level"
       com.iombian-shutdown-service.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)"
