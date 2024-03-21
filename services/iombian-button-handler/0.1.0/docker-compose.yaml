@@ -1,0 +1,39 @@
+services:
+  iombian-button-handler:
+    image: ghcr.io/tknika/iombian-button-handler:0.1.0
+    container_name: iombian-button-handler
+    privileged: true
+    restart: unless-stopped
+    networks:
+      - iombian-internal-services
+    ports:
+      - ${BUTTON_EVENTS_PORT:-5556}:5556
+    environment:
+      BUTTON_PIN: ${BUTTON_PIN:-3}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    labels:
+      com.iombian-button-handler.service.name: "IoMBian Button Handler"
+      com.iombian-button-handler.service.author: "Aitor Castaño"
+      com.iombian-button-handler.service.version: "0.1.0"
+      com.iombian-button-handler.service.description: "IoMBian GPIO button handler. Publishes the registered button events using ZeroMQ as the communication protocol."
+      com.iombian-button-handler.service.changelog: "First release."
+      com.iombian-button-handler.service.documentation_url: ""
+
+      com.iombian-button-handler.env.BUTTON_EVENTS_PORT.name: "Button events port"
+      com.iombian-button-handler.env.BUTTON_EVENTS_PORT.description: "Port where button events are published."
+      com.iombian-button-handler.env.BUTTON_EVENTS_PORT.type: "integer:1024;65535"
+      com.iombian-button-handler.env.BUTTON_EVENTS_PORT.default: "5556"
+
+      com.iombian-button-handler.env.BUTTON_PIN.name: "Button pin"
+      com.iombian-button-handler.env.BUTTON_PIN.description: "The GPIO pin where the button is connected."
+      com.iombian-button-handler.env.BUTTON_PIN.type: "integer:1;40"
+      com.iombian-button-handler.env.BUTTON_PIN.default: "3"
+
+      com.iombian-button-handler.env.LOG_LEVEL.name: "Log level"
+      com.iombian-button-handler.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
+      com.iombian-button-handler.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
+      com.iombian-button-handler.env.LOG_LEVEL.default: "INFO"
+
+networks:
+  iombian-internal-services:
+    external: true
