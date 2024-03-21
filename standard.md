@@ -6,7 +6,7 @@ This is the standard to follow when uploading services to the IoMBian Services M
 
 To add a new service, create a folder with the name of the service inside the "services" folder of the "iombian-services-marketplace" repository.
 The folder name can only contain alphanumeric characters and the words that compose it must be separated by hyphens ("-"), never by blank spaces.
-As will be seen later, this name must be the same as the name of the service and the name of the container that will be defined in the docker-compose.yml file.
+As will be seen later, if the docker-compose.yaml only contains one service, the name of the service must be the same as the name of the docker service and container.
 Finally, the different versions of the service must be stored in separate folders, identifying the version number in the folder name.
 
 Example:
@@ -21,8 +21,9 @@ services/iombian-config-file-handler/0.1.0/docker-compose.yml
 
 All the information about the service should be stored in the docker-compose.yml file and it should be able to be executed with a simple "docker compose up", without having to execute any other command.
 
-First you will need to define the name of the service, the name of the container that will be generated and the image.
-The name of the service and the name of the container must be the same and it must be composed of alphanumeric characters and the words must be separated by the hyphen symbol ("-"), blanks are not allowed.
+First you will define the services section, which will contain all the docker services.
+For each service, you will need to define the name of the service, the name of the container that will be generated and the image.
+The name of the docker service and the name of the container must be the same and it must be composed of alphanumeric characters and the words must be separated by the hyphen symbol ("-"), blanks are not allowed.
 The image will need to be external, it can’t have a build argument.
 The image can be stored in Docker Hub, GitHub Container Registry or any other alternative.
 
@@ -40,6 +41,9 @@ services:
         privileged: true
         restart: unless-stopped
 ```
+
+In this case it only contains a single service in the services section.
+Since there is only one service, the name of that service is the same as the name of the service folder.
 
 ## Volumes
 Define the volumes as you would in a normal docker compose file.
@@ -97,7 +101,7 @@ environment:
 
 The label names will be structured with dots.
 All labels will start with `com.<service-name>`.
-This `<service-name>` must be the same as the main service name and the container name.
+This `<service-name>` must be the same as the docker service name and the container name.
 After that, the type of the label will be defined: service or env (environment variables).
 Then the structure will vary depending on the type.
 
@@ -184,7 +188,9 @@ Without being all in uppercase, without underscores and all that.
         - The enum has the type before the ":" and the possibilities after separated with ",".
         The options are defined without spaces between the commas.
         - `"enum:NOTSET,DEBUG,INFO,WARNING,WARN,ERROR,FATAL,CRITICAL"`
-- default: The default value of the variable
+- default: The default value of the variable.
+All the default values must be defined as a string.
+The boolean values will be defined with lowercase like this: "true" or "false".
 
 Here is an example of the labels of the environment variables of the iombian-button-handler:
 
@@ -192,12 +198,12 @@ Here is an example of the labels of the environment variables of the iombian-but
 com.iombian-button-handler.env.BUTTON_EVENTS_PORT.name: "Button events port"
 com.iombian-button-handler.env.BUTTON_EVENTS_PORT.description: "Port for communicating button events."
 com.iombian-button-handler.env.BUTTON_EVENTS_PORT.type: "integer:1024;65535"
-com.iombian-button-handler.env.BUTTON_EVENTS_PORT.default: 5556
+com.iombian-button-handler.env.BUTTON_EVENTS_PORT.default: "5556"
 
 com.iombian-button-handler.env.BUTTON_PIN.name: "Button pin"
 com.iombian-button-handler.env.BUTTON_PIN.description: "The pin of the raspberry button."
 com.iombian-button-handler.env.BUTTON_PIN.type: "integer:1;40"
-com.iombian-button-handler.env.BUTTON_PIN.default: 3
+com.iombian-button-handler.env.BUTTON_PIN.default: "3"
 
 com.iombian-button-handler.env.LOG_LEVEL.name: "Log level"
 com.iombian-button-handler.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
@@ -230,7 +236,7 @@ services:
             com.iombian-example-service.env.PORT_ENV.name: "Port env"
             com.iombian-example-service.env.BUTTON_EVENTS_PORT.description: "Example functionality of Port env."
             com.iombian-example-service.env.BUTTON_EVENTS_PORT.type: "integer"
-            com.iombian-example-service.env.BUTTON_EVENTS_PORT.default: 5555
+            com.iombian-example-service.env.BUTTON_EVENTS_PORT.default: "5555"
 
             com.iombian-example-service.env.EXAMPLE_ENV.name: "Example env"
             com.iombian-example-service.env.EXAMPLE_ENV.description: "Example functionality of example env"
