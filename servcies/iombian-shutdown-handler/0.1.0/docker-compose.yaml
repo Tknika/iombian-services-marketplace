@@ -22,7 +22,7 @@ services:
 
       com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.name: "Shutdown event"
       com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.description: "Event that will trigger the device to shutdown."
-      com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.type: "string"
+      com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.type: "enum:double_click,triple_click,many_click,long_click,long_long_click"
       com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.default: "long_click"
 
       com.iombian-shutdown-handler.env.BUTTON_EVENTS_PORT.name: "Button events port"
