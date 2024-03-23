@@ -22,7 +22,7 @@ services/iombian-config-file-handler/0.1.0/docker-compose.yml
 All the information about the service should be stored in the docker-compose.yml file and it should be able to be executed with a simple "docker compose up", without having to execute any other command.
 
 First you will define the services section, which will contain all the docker services.
-For each service, you will need to define the name of the service, the name of the container that will be generated and the image.
+For each service, you will have to define the name of the service, the name of the container that it will generate and the image that will be used to build the container.
 The name of the docker service and the name of the container must be the same and it must be composed of alphanumeric characters and the words must be separated by the hyphen symbol ("-"), blanks are not allowed.
 The image will need to be external, it can’t have a build argument.
 The image can be stored in Docker Hub, GitHub Container Registry or any other alternative.
@@ -189,7 +189,7 @@ Without being all in uppercase, without underscores and all that.
         The options are defined without spaces between the commas.
         - `"enum:NOTSET,DEBUG,INFO,WARNING,WARN,ERROR,FATAL,CRITICAL"`
 - default: The default value of the variable.
-All the default values must be defined as a string.
+All the default values must be defined as strings.
 The boolean values will be defined with lowercase like this: "true" or "false".
 
 Here is an example of the labels of the environment variables of the iombian-button-handler:
