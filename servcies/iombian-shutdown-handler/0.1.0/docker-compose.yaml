@@ -1,0 +1,45 @@
+services:
+  iombian-shutdown-handler:
+    image: ghcr.io/tknika/iombian-shutdown-handler:0.2.0
+    container_name: iombian-shutdown-handler
+    restart: unless-stopped
+    networks:
+      - iombian-internal-services
+    environment:
+      SHUTDOWN_EVENT: ${SHUTDOWN_EVENT:-long_click}
+      BUTTON_EVENTS_HOST: iombian-button-handler
+      BUTTON_EVENTS_PORT: ${BUTTON_EVENTS_PORT:-5556}
+      SHUTDOWN_SERVICE_HOST: iombian-shutdown-service
+      SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT:-5558}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    labels:
+      com.iombian-shutdown-handler.service.name: "IoMBian Shutdown Handler"
+      com.iombian-shutdown-handler.service.author: "Aitor Castaño"
+      com.iombian-shutdown-handler.service.version: "0.1.0"
+      com.iombian-shutdown-handler.service.description: "Handles shutdown by listening to button events and sending shutdown commands."
+      com.iombian-shutdown-handler.service.changelog: "First release."
+      com.iombian-shutdown-handler.service.documentation-url: ""
+
+      com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.name: "Shutdown event"
+      com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.description: "Event that will trigger the device to shutdown."
+      com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.type: "enum:double_click,triple_click,many_click,long_click,long_long_click"
+      com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.default: "long_click"
+
+      com.iombian-shutdown-handler.env.BUTTON_EVENTS_PORT.name: "Button events port"
+      com.iombian-shutdown-handler.env.BUTTON_EVENTS_PORT.description: "The port where the button events will be published."
+      com.iombian-shutdown-handler.env.BUTTON_EVENTS_PORT.type: "integer:1024;65535"
+      com.iombian-shutdown-handler.env.BUTTON_EVENTS_PORT.default: "5556"
+
+      com.iombian-shutdown-handler.env.SHUTDOWN_SERVICE_PORT.name: "Shutdown service port"
+      com.iombian-shutdown-handler.env.SHUTDOWN_SERVICE_PORT.description: "Port where the shutdown command will be sent."
+      com.iombian-shutdown-handler.env.SHUTDOWN_SERVICE_PORT.type: "integer:1024;65535"
+      com.iombian-shutdown-handler.env.SHUTDOWN_SERVICE_PORT.default: "5558"
+
+      com.iombian-shutdown-handler.env.LOG_LEVEL.name: "Log level"
+      com.iombian-shutdown-handler.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
+      com.iombian-shutdown-handler.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
+      com.iombian-shutdown-handler.env.LOG_LEVEL.default: "INFO"
+
+networks:
+  iombian-internal-services:
+    external: true
