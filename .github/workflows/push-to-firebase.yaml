@@ -14,9 +14,9 @@ jobs:
       - name: Checkout marketplace scripts
         uses: actions/checkout@v4
         with:
-          repository: ${{ secrets.SCRIPTS_REPO }}
+          repository: ${{ secrets.MARKETPLACE_SCRIPTS_REPO }}
           path: scripts
-          token: ${{ secrets.MARKETPLACE_SCRIPTS_REPO_TOKEN }} # Add only if SCRIPTS_REPO is private
+          token: ${{ secrets.MARKETPLACE_SCRIPTS_REPO_TOKEN }} # Add only if MARKETPLACE_SCRIPTS_REPO is private
       - name: Track changes
         id: changed-files
         uses: tj-actions/changed-files@v43
