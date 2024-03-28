@@ -7,10 +7,10 @@ services:
     networks:
       - iombian-internal-services
     ports:
-      - ${BUTTON_EVENTS_PORT:-5556}:5556
+      - ${BUTTON_EVENTS_PORT}:5556
     environment:
-      BUTTON_PIN: ${BUTTON_PIN:-3}
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      BUTTON_PIN: ${BUTTON_PIN}
+      LOG_LEVEL: ${LOG_LEVEL}
     labels:
       com.iombian-button-handler.service.name: "IoMBian Button Handler"
       com.iombian-button-handler.service.author: "Aitor Castaño"

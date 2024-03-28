@@ -8,14 +8,14 @@ services:
     networks:
       - iombian-internal-services 
     ports:
-      - ${CONFIG_PORT:-5555}:5555
+      - ${CONFIG_PORT}:5555
     environment:
-      RESET_EVENT: ${RESET_EVENT:-long_long_click}
+      RESET_EVENT: ${RESET_EVENT}
       BUTTON_EVENTS_HOST: iombian-button-handler
-      BUTTON_EVENTS_PORT: ${BUTTON_EVENTS_PORT:-5556}
+      BUTTON_EVENTS_PORT: ${BUTTON_EVENTS_PORT}
       SHUTDOWN_SERVICE_HOST: iombian-shutdown-service
-      SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT:-5558}
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT}
+      LOG_LEVEL: ${LOG_LEVEL}
     labels:
       com.iombian-config-file-handler.service.name: "IoMBian Config File Handler"
       com.iombian-config-file-handler.service.author: "Aitor Castaño"
