@@ -6,12 +6,12 @@ services:
     networks:
       - iombian-internal-services
     environment:
-      SHUTDOWN_EVENT: ${SHUTDOWN_EVENT:-long_click}
+      SHUTDOWN_EVENT: ${SHUTDOWN_EVENT}
       BUTTON_EVENTS_HOST: iombian-button-handler
-      BUTTON_EVENTS_PORT: ${BUTTON_EVENTS_PORT:-5556}
+      BUTTON_EVENTS_PORT: ${BUTTON_EVENTS_PORT}
       SHUTDOWN_SERVICE_HOST: iombian-shutdown-service
-      SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT:-5558}
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT}
+      LOG_LEVEL: ${LOG_LEVEL}
     labels:
       com.iombian-shutdown-handler.service.name: "IoMBian Shutdown Handler"
       com.iombian-shutdown-handler.service.author: "Aitor Castaño"

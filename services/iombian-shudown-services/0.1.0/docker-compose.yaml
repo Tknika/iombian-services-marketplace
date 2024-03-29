@@ -11,9 +11,9 @@ services:
     networks:
       - iombian-internal-services
     ports:
-      - ${SHUTDOWN_SERVICE_PORT:-5558}:5558
+      - ${SHUTDOWN_SERVICE_PORT}:5558
     environment:
-      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LOG_LEVEL: ${LOG_LEVEL}
     labels:
       com.iombian-shutdown-service.service.name: "IoMBian Shutdown Service"
       com.iombian-shutdown-service.service.author: "Aitor Castaño"
