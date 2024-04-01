@@ -1,0 +1,3 @@
+firebase_admin==6.5.0
+python_on_whales==0.70.0
+PyYAML==6.0.1
