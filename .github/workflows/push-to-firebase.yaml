@@ -23,13 +23,13 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install requirements
-        run: pip install -r scripts/requirements.txt
+        run: pip install -r .github/scripts/requirements.txt
       - name: Push to firebase
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
           SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         run: |
           for file in ${ALL_CHANGED_FILES}; do
-            python scripts/upload_service.py $file
+            python .github/scripts/upload_service.py $file
           done
 
