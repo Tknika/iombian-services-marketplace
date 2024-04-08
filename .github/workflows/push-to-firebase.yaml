@@ -1,0 +1,35 @@
+name: Push to firebase
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push-to-firebase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+      - name: Track changes
+        id: changed-files
+        uses: tj-actions/changed-files@v43
+        with:
+          files: |
+            **/docker-compose.yml
+            **/docker-compose.yaml
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install requirements
+        run: pip install -r .github/scripts/requirements.txt
+      - name: Push to firebase
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            python .github/scripts/upload_service.py $file
+          done
+
