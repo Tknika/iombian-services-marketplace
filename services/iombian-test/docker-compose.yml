@@ -1,1 +1,5 @@
 services:
+  iombian-fake-service:
+    image: iombian/fake-service:latest
+    container_name: iombian-fake-service
+    restart: always
