@@ -6,12 +6,12 @@ services:
     networks:
       - iombian-internal-services
     volumes:
-      - ${BASE_PATH}:${BASE_PATH}
+      - /opt/iombian-services:/opt/iombian-services
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
       - /usr/libexec/docker/cli-plugins/docker-compose:/usr/libexec/docker/cli-plugins/docker-compose
     environment:
-      BASE_PATH: ${BASE_PATH}
+      BASE_PATH: /opt/iombian-services
       WAIT_SECONDS: 1
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
@@ -21,11 +21,6 @@ services:
       com.iombian-installed-services-handler.service.description: "Listens the services folder and starts/stops the composes automatically."
       com.iombian-installed-services-handler.service.changelog: "First release."
       com.iombian-installed-services-handler.service.documentation_url: ""
-
-      com.iombian-installed-services-handler.env.BASE_PATH.name: "Base path"
-      com.iombian-installed-services-handler.env.BASE_PATH.description: "The path where the iombian services will be added."
-      com.iombian-installed-services-handler.env.BASE_PATH.type: "string"
-      com.iombian-installed-services-handler.env.BASE_PATH.default: "/opt/iombian-services"
 
       com.iombian-installed-services-handler.env.LOG_LEVEL.name: "Log level"
       com.iombian-installed-services-handler.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
