@@ -47,6 +47,7 @@ class Service(BaseModel):
     restart: Literal["unless-stopped", "no", "on-failure"]
     networks: List[Literal["iombian-internal-services", "iombian-external-services"]]
     ports: List[str] | None = None
+    volumes: List[str] | None = None
     environment: Dict[str, Any] | None = None
     labels: Dict[str, str]
 
@@ -225,6 +226,11 @@ class Service(BaseModel):
             for port in self.ports:
                 port_vars = get_vars_from_string(port)
                 all_vars += port_vars
+
+        if self.volumes:
+            for volume in self.volumes:
+                volume_vars = get_vars_from_string(volume)
+                all_vars += volume_vars
 
         if self.environment:
             for env in self.environment:
