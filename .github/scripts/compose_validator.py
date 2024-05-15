@@ -237,7 +237,7 @@ class Service(BaseModel):
                 env_vars = get_vars_from_string(env)
                 all_vars += env_vars
 
-                env_value = self.environment[env]
+                env_value = str(self.environment[env])
                 env_value_vars = get_vars_from_string(env_value)
                 all_vars += env_value_vars
 
