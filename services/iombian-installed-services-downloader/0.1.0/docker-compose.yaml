@@ -6,11 +6,11 @@ services:
     networks:
       - iombian-internal-services
     volumes:
-      - ${BASE_PATH}:${BASE_PATH}
+      - /opt/iombian-services:/opt/iombian-services
     environment:
       CONFIG_HOST: "iombian-config-file-handler"
       CONFIG_PORT: ${CONFIG_PORT}
-      BASE_PATH: ${BASE_PATH}
+      BASE_PATH: /opt/iombian-services
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
       com.iombian-installed-services-downloader.service.name: "IoMBian Installed Services Downloader"
@@ -24,11 +24,6 @@ services:
       com.iombian-installed-services-downloader.env.CONFIG_PORT.description: "The port of the IoMBian Config File Handler."
       com.iombian-installed-services-downloader.env.CONFIG_PORT.type: "integer:1024:65535"
       com.iombian-installed-services-downloader.env.CONFIG_PORT.default: "5555"
-
-      com.iombian-installed-services-downloader.env.BASE_PATH.name: "Base path"
-      com.iombian-installed-services-downloader.env.BASE_PATH.description: "The path where the iombian services will be added."
-      com.iombian-installed-services-downloader.env.BASE_PATH.type: "string"
-      com.iombian-installed-services-downloader.env.BASE_PATH.default: "/opt/iombian-services"
 
       com.iombian-installed-services-downloader.env.LOG_LEVEL.name: "Log level"
       com.iombian-installed-services-downloader.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
