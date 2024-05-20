@@ -274,6 +274,7 @@ class DockerCompose(BaseModel):
 
         main_service = self.services[services_with_service_name[0]]
         service_info = [
+            "id",
             "name",
             "author",
             "version",
@@ -283,8 +284,14 @@ class DockerCompose(BaseModel):
         ]
         for info in service_info:
             label_key = f"com.{self.service_name}.service.{info}"
-            if not main_service.labels or main_service.labels.get(label_key) is None:
+            if not main_service.labels:
+                raise ValueError("main service must have labels")
+
+            if main_service.labels.get(label_key) is None:
                 raise ValueError(f"main service labels must contain {info}")
+
+            if info == "id" and main_service.labels.get(label_key) != self.service_name:
+                raise ValueError("the id of the service must be the same as the \"main\" service name")
         return self
 
 

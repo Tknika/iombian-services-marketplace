@@ -1,6 +1,6 @@
 # IoMBian Marketplace Standard
 
-### 0.1.1
+### 0.1.2
 
 This is the standard to follow when uploading services to the IoMBian Services Marketplace. 
 
@@ -115,6 +115,7 @@ Then the structure will vary depending on the type.
 
 This will define metadata or information about the service. The labels will start with `com.<service-name>.service`.
 Only the "main" service will have this labels.
+- id: The id of the service. This is the same as the parent service name, the name of the folder of the service.
 - name: The name of the service in a more readable way. Without the hyphens.
 - author: The author of the service.
 - version: The version of the service.
@@ -140,6 +141,7 @@ Here is an example of the iombian-button-handler service:
 > The documentation_url is added to make a better example.
 
 ```
+com.iombian-button-handler.service.id: "iombian-button-handler"
 com.iombian-button-handler.service.name: "IoMBian button handler"
 com.iombian-button-handler.service.author: "Aitor Castaño"
 com.iombian-button-handler.service.version: "0.1.0"
@@ -235,6 +237,7 @@ services:
         environment:
             EXAMPLE_ENV: ${EXAMPLE_ENV:-default}
         labels:
+            com.iombian-example-service.service.id: "iombian-example-service" 
             com.iombian-example-service.service.name: "IoMBian example service" 
             com.iombian-example-service.service.author: "<author_name>"
             com.iombian-example-service.service.version: "0.1.0"
