@@ -1,7 +1,5 @@
 from typing import Dict, TypedDict
 
-import yaml
-
 Env = TypedDict(
     "Env",
     {"name": str, "description": str, "type": str, "default": str | int | float | bool},
@@ -18,29 +16,27 @@ class ParsedLabels(TypedDict):
     envs: Dict[str, Env]
 
 
-def parse_labels(docker_compose: dict) -> Dict[str, ParsedLabels]:
+def parse_labels(docker_compose: dict, service_name: str) -> Dict[str, ParsedLabels]:
     """Given the docker-compose in dict/json form, return the label information."""
     services = docker_compose["services"]
     parsed_labels = {}
 
-    for service in list(services.keys()):
+    for service in services:
         service_labels = {}
-        labels = services[service]["labels"]
+        labels = services[service].get("labels") or {}
 
-        for label in list(labels.keys()):
-            value = labels[label]
-
+        for label, value in labels.items():
             splitted_label = label.split(".")
             namespace = splitted_label[0]
-            service_name = splitted_label[1]
+            label_service_name = splitted_label[1]
             label_type = splitted_label[2]
 
-            if namespace != "com" or service_name != service:
+            if namespace != "com" or label_service_name != service:
                 continue
 
-            if label_type == "service":
+            if label_type == "service" and label_service_name == service_name:
                 service_metadata_key = splitted_label[3]
-                service_labels[service_metadata_key] = value
+                parsed_labels[service_metadata_key] = value
 
             elif label_type == "env":
                 if not service_labels.get("envs"):
@@ -54,12 +50,5 @@ def parse_labels(docker_compose: dict) -> Dict[str, ParsedLabels]:
                 service_labels["envs"][env_name][env_metadata_key] = value
 
         parsed_labels[service] = service_labels
+
     return parsed_labels
-
-
-if __name__ == "__main__":
-    with open("docker-compose.yaml", "r") as docker_compose_txt:
-        docker_compose = yaml.safe_load(docker_compose_txt)
-
-    labels = parse_labels(docker_compose)
-    print(labels)

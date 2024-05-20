@@ -4,10 +4,8 @@ from compose_validator import validate_compose
 
 if __name__ == "__main__":
     path_to_docker_compose = sys.argv[1]
-    print(path_to_docker_compose)
 
     service_name = path_to_docker_compose.split("/")[1]
-    print(service_name)
 
     try:
         validate_compose(path_to_docker_compose, service_name)
