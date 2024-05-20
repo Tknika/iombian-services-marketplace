@@ -6,7 +6,7 @@ This is the standard to follow when uploading services to the IoMBian Services M
 
 To add a new service, create a folder with the name of the service inside the "services" folder of the "iombian-services-marketplace" repository.
 The folder name can only contain alphanumeric characters and the words that compose it must be separated by hyphens ("-"), never by blank spaces.
-As will be seen later, if the docker-compose.yaml only contains one service, the name of the service must be the same as the name of the docker service and container.
+As will be seen later, the name of the service must be the same as the name of the "main" docker service.
 Finally, the different versions of the service must be stored in separate folders, identifying the version number in the folder name.
 
 Example:
@@ -18,6 +18,7 @@ services/iombian-button-handler/0.2.0/docker-compose.yml
 services/iombian-shutdown-handler/0.1.0/docker-compose.yml
 services/iombian-config-file-handler/0.1.0/docker-compose.yml
 ```
+<sup>(Both docker-compose.yml and docker-compose.yaml are accepted.)</sup>
 
 All the information about the service should be stored in the docker-compose.yml file and it should be able to be executed with a simple "docker compose up", without having to execute any other command.
 
@@ -26,6 +27,11 @@ For each service, you will have to define the name of the service, the name of t
 The name of the docker service and the name of the container must be the same and it must be composed of alphanumeric characters and the words must be separated by the hyphen symbol ("-"), blanks are not allowed.
 The image will need to be external, it can’t have a build argument.
 The image can be stored in Docker Hub, GitHub Container Registry or any other alternative.
+
+Every docker-compose.yaml file must have one and only one "main" service.
+The main service is the one which has the same name as the parent service.
+If the docker-compose.yaml file only has one service, that service is the "main" service.
+As will be seen later, the "main" service is the one that will have the service labels.
 
 It is recommended that the service doesn't have privileges if it doesn't need them.
 Unless the service is launched by some other event, the restart parameter will be "unless-stopped", not "always".
@@ -43,7 +49,7 @@ services:
 ```
 
 In this case it only contains a single service in the services section.
-Since there is only one service, the name of that service is the same as the name of the service folder.
+Since there is only one service, that service will be the "main" service and it's name will be the same as the name of the service folder.
 
 ## Volumes
 Define the volumes as you would in a normal docker compose file.
@@ -108,6 +114,7 @@ Then the structure will vary depending on the type.
 ### Service
 
 This will define metadata or information about the service. The labels will start with `com.<service-name>.service`.
+Only the "main" service will have this labels.
 - name: The name of the service in a more readable way. Without the hyphens.
 - author: The author of the service.
 - version: The version of the service.
@@ -232,6 +239,8 @@ services:
             com.iombian-example-service.service.author: "<author_name>"
             com.iombian-example-service.service.version: "0.1.0"
             com.iombian-example-service.service.description: "Example functionality of the example service"
+            com.iombian-example-service.service.changelog: "First release."
+            com.iombian-example-service.service.documentation_url: "url/to/documentation"
 
             com.iombian-example-service.env.PORT_ENV.name: "Port env"
             com.iombian-example-service.env.BUTTON_EVENTS_PORT.description: "Example functionality of Port env."
