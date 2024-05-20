@@ -1,6 +1,6 @@
 # IoMBian Marketplace Standard
 
-### 0.1.0
+### 0.1.1
 
 This is the standard to follow when uploading services to the IoMBian Services Marketplace. 
 
