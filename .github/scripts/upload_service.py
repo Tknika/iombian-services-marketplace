@@ -42,7 +42,7 @@ if __name__ == "__main__":
     with open(path_to_docker_compose, "r") as docker_compose_txt:
         docker_compose = yaml.safe_load(docker_compose_txt)
 
-    labels = parse_labels(docker_compose)
+    labels = parse_labels(docker_compose, service_name)
 
     upload_to_services(
         {"labels": labels, "compose": docker_compose}, service_name, service_version, db

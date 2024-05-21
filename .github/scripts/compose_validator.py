@@ -49,7 +49,7 @@ class Service(BaseModel):
     ports: List[str] | None = None
     volumes: List[str] | None = None
     environment: Dict[str, Any] | None = None
-    labels: Dict[str, str]
+    labels: Dict[str, str] | None = None
 
     @field_validator("labels")
     @classmethod
@@ -174,35 +174,11 @@ class Service(BaseModel):
         return labels
 
     @model_validator(mode="after")
-    def all_service_info(self):
-        """Check if the service has all the necessary metadata labels.
-
-        The necessary labels are:
-        - name
-        - author
-        - version
-        - description
-        - changelog
-        - documentation_url
-
-        """
-        service_info = [
-            "name",
-            "author",
-            "version",
-            "description",
-            "changelog",
-            "documentation_url",
-        ]
-        for info in service_info:
-            label_key = f"com.{self.container_name}.service.{info}"
-            if self.labels.get(label_key) is None:
-                raise ValueError(f"service labels must contain {info}")
-        return self
-
-    @model_validator(mode="after")
     def container_name_is_in_labels(self):
         """Check if the container name is the same as the service name in the labels."""
+        if not self.labels:
+            return self
+
         for label in self.labels:
             label_service = label.split(".")[1]
             if label_service != self.container_name:
@@ -242,7 +218,7 @@ class Service(BaseModel):
                 all_vars += env_value_vars
 
         for var in all_vars:
-            if not env_has_labels(var, self.labels, self.container_name):
+            if not self.labels or not env_has_labels(var, self.labels, self.container_name):
                 raise ValueError(f"environment variable {var} has no labels")
 
         return self
@@ -254,6 +230,7 @@ Services: TypeAlias = Dict[str, Service]
 class DockerCompose(BaseModel):
     services: Services
     networks: Networks
+    service_name: str
 
     @field_validator("networks")
     @classmethod
@@ -281,6 +258,35 @@ class DockerCompose(BaseModel):
                 raise ValueError("service name and container name msut be the same.")
         return services
 
+    @model_validator(mode="after")
+    def main_service_has_data(self):
+        """Check that there is a main service and that the main service has the services metadata.
+
+        The main service is docker service which has the same name as the parent service.
+        """
+        services_with_service_name = [
+            service for service in self.services if service == self.service_name
+        ]
+        if len(services_with_service_name) != 1:
+            raise ValueError(
+                "service must contain one docker service with the same name"
+            )
+
+        main_service = self.services[services_with_service_name[0]]
+        service_info = [
+            "name",
+            "author",
+            "version",
+            "description",
+            "changelog",
+            "documentation_url",
+        ]
+        for info in service_info:
+            label_key = f"com.{self.service_name}.service.{info}"
+            if not main_service.labels or main_service.labels.get(label_key) is None:
+                raise ValueError(f"main service labels must contain {info}")
+        return self
+
 
 def validate_compose(path_to_compose: str, service_name: str):
     """Validate the compose given the path to the compose and the name of the main service.
@@ -290,17 +296,11 @@ def validate_compose(path_to_compose: str, service_name: str):
     For example in: `services/iombian-button-handler/0.1.0/docker-compose.yaml` the service name is `iombian-button-handler`.
     """
     docker = DockerClient(compose_files=[path_to_compose])
-
     docker.compose.config()
 
     with open(path_to_compose, "r") as docker_compose_txt:
         docker_compose = yaml.safe_load(docker_compose_txt)
-        # print(docker_compose)
 
-    validated_compose = DockerCompose(**docker_compose)
-    if len(validated_compose.services) == 1:
-        docker_service = validated_compose.services.get(service_name)
-        if docker_service is None:
-            raise ValueError("docker service name must be the same as service name")
+    validated_compose = DockerCompose(**docker_compose, service_name=service_name)
 
     return validated_compose
