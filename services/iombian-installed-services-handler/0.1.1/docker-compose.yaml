@@ -1,0 +1,33 @@
+services:
+  iombian-installed-services-handler:
+    image: ghcr.io/tknika/iombian-installed-services-handler:0.1.0
+    container_name: iombian-installed-services-handler
+    restart: unless-stopped
+    networks:
+      - iombian-internal-services
+    volumes:
+      - /opt/iombian-services:/opt/iombian-services
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - /usr/libexec/docker/cli-plugins/docker-compose:/usr/libexec/docker/cli-plugins/docker-compose
+    environment:
+      BASE_PATH: /opt/iombian-services
+      WAIT_SECONDS: 1
+      LOG_LEVEL: ${LOG_LEVEL}
+    labels:
+      com.iombian-installed-services-handler.service.id: "iombian-installed-services-handler"
+      com.iombian-installed-services-handler.service.name: "IoMBian installed services handler"
+      com.iombian-installed-services-handler.service.author: "IoMBian team"
+      com.iombian-installed-services-handler.service.version: "0.1.1"
+      com.iombian-installed-services-handler.service.description: "Listens the services folder and starts/stops the composes automatically."
+      com.iombian-installed-services-handler.service.changelog: "Update to standard version 0.1.2."
+      com.iombian-installed-services-handler.service.documentation_url: ""
+
+      com.iombian-installed-services-handler.env.LOG_LEVEL.name: "Log level"
+      com.iombian-installed-services-handler.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
+      com.iombian-installed-services-handler.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
+      com.iombian-installed-services-handler.env.LOG_LEVEL.default: "INFO"
+
+networks:
+  iombian-internal-services:
+    external: true
