@@ -16,7 +16,7 @@ services:
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
       com.iombian-installed-services-handler.service.id: "iombian-installed-services-handler"
-      com.iombian-installed-services-handler.service.name: "IoMBian installed services handler"
+      com.iombian-installed-services-handler.service.name: "IoMBian Installed Services Handler"
       com.iombian-installed-services-handler.service.author: "IoMBian team"
       com.iombian-installed-services-handler.service.version: "0.1.1"
       com.iombian-installed-services-handler.service.description: "Listens the services folder and starts/stops the composes automatically."
@@ -24,7 +24,7 @@ services:
       com.iombian-installed-services-handler.service.documentation_url: ""
 
       com.iombian-installed-services-handler.env.LOG_LEVEL.name: "Log level"
-      com.iombian-installed-services-handler.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
+      com.iombian-installed-services-handler.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
       com.iombian-installed-services-handler.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
       com.iombian-installed-services-handler.env.LOG_LEVEL.default: "INFO"
 

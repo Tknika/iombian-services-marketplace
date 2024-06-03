@@ -27,8 +27,8 @@ services:
       com.iombian-installed-services-downloader.env.CONFIG_PORT.default: "5555"
 
       com.iombian-installed-services-downloader.env.LOG_LEVEL.name: "Log level"
-      com.iombian-installed-services-downloader.env.LOG_LEVEL.description: "Log level for the python logger (INFO, DEBUG, ...)."
-      com.iombian-installed-services-downloader.env.LOG_LEVEL.type: "enum:NOTSET,DEBUG,INFO,WARNING,WARN,ERROR,FATAL,CRITICAL"
+      com.iombian-installed-services-downloader.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
+      com.iombian-installed-services-downloader.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
       com.iombian-installed-services-downloader.env.LOG_LEVEL.default: "INFO"
 
 networks:
