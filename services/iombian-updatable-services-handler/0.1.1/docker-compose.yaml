@@ -1,0 +1,33 @@
+services:
+  iombian-updatable-services-handler:
+    image: ghcr.io/tknika/iombian-updatable-services-handler:0.1.0
+    container_name: iombian-updatable-services-handler
+    restart: unless-stopped
+    networks:
+      - iombian-internal-services
+    environment:
+      CONFIG_HOST: "iombian-config-file-handler"
+      CONFIG_PORT: ${CONFIG_PORT}
+      LOG_LEVEL: ${LOG_LEVEL}
+    labels:
+      com.iombian-updatable-services-handler.service.id: "iombian-updatable-services-handler"
+      com.iombian-updatable-services-handler.service.name: "IoMBian Updatable Services Handler"
+      com.iombian-updatable-services-handler.service.author: "IoMBian team"
+      com.iombian-updatable-services-handler.service.version: "0.1.1"
+      com.iombian-updatable-services-handler.service.description: "Watch the installed services and notify whenever there is an update."
+      com.iombian-updatable-services-handler.service.changelog: "Update to standard version 0.1.2."
+      com.iombian-updatable-services-handler.service.documentation_url: ""
+
+      com.iombian-updatable-services-handler.env.CONFIG_PORT.name: "Config port"
+      com.iombian-updatable-services-handler.env.CONFIG_PORT.description: "The port of the IoMBian Config File Handler."
+      com.iombian-updatable-services-handler.env.CONFIG_PORT.type: "integer:1024:65535"
+      com.iombian-updatable-services-handler.env.CONFIG_PORT.default: "5555"
+
+      com.iombian-updatable-services-handler.env.LOG_LEVEL.name: "Log level"
+      com.iombian-updatable-services-handler.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)"
+      com.iombian-updatable-services-handler.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
+      com.iombian-updatable-services-handler.env.LOG_LEVEL.default: "INFO"
+
+networks:
+  iombian-internal-services:
+    external: true
