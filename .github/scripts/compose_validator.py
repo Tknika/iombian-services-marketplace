@@ -137,7 +137,7 @@ class Service(BaseModel):
                                 max = int(min_max.split(";")[1])
                             except IndexError:
                                 raise ValueError(
-                                    "min and max must be separated by a semicolon"
+                                    "min and max must be separated by a semicolon \";\""
                                 )
 
                             default_value = int(default_value)
@@ -153,7 +153,7 @@ class Service(BaseModel):
                                 max = float(min_max.split(";")[1])
                             except IndexError:
                                 raise ValueError(
-                                    "min and max must be separated by a semicolon"
+                                    "min and max must be separated by a semicolon \";\""
                                 )
 
                             default_value = float(default_value)
