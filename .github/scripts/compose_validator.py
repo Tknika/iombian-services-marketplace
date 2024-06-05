@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Literal, TypeAlias, TypeVar
 import yaml
 from pydantic import BaseModel, field_validator, model_validator
 from python_on_whales import DockerClient
+from typing_extensions import IntVar
 
 T = TypeVar("T")
 
@@ -128,11 +129,16 @@ class Service(BaseModel):
                             if default_value != "true" and default_value != "false":
                                 raise ValueError('boolea must be "true" or "false"')
 
-                    if len(type_value.split(":")) == 2:
+                    elif len(type_value.split(":")) == 2:
                         if env_type == "integer":
                             min_max = type_value.split(":")[1]
-                            min = int(min_max.split(";")[0])
-                            max = int(min_max.split(";")[1])
+                            try:
+                                min = int(min_max.split(";")[0])
+                                max = int(min_max.split(";")[1])
+                            except IndexError:
+                                raise ValueError(
+                                    "min and max must be separated by a semicolon"
+                                )
 
                             default_value = int(default_value)
                             if not min <= default_value <= max:
@@ -142,8 +148,13 @@ class Service(BaseModel):
 
                         elif env_type == "float":
                             min_max = type_value.split(":")[1]
-                            min = float(min_max.split(";")[0])
-                            max = float(min_max.split(";")[1])
+                            try:
+                                min = float(min_max.split(";")[0])
+                                max = float(min_max.split(";")[1])
+                            except IndexError:
+                                raise ValueError(
+                                    "min and max must be separated by a semicolon"
+                                )
 
                             default_value = float(default_value)
                             if not min <= default_value <= max:
@@ -170,6 +181,8 @@ class Service(BaseModel):
                                 raise ValueError(
                                     "default enum value must be part of the enum"
                                 )
+                    else:
+                        raise ValueError('variable type can only have one colon ":"')
 
         return labels
 
@@ -218,7 +231,9 @@ class Service(BaseModel):
                 all_vars += env_value_vars
 
         for var in all_vars:
-            if not self.labels or not env_has_labels(var, self.labels, self.container_name):
+            if not self.labels or not env_has_labels(
+                var, self.labels, self.container_name
+            ):
                 raise ValueError(f"environment variable {var} has no labels")
 
         return self
@@ -291,7 +306,9 @@ class DockerCompose(BaseModel):
                 raise ValueError(f"main service labels must contain {info}")
 
             if info == "id" and main_service.labels.get(label_key) != self.service_name:
-                raise ValueError("the id of the service must be the same as the \"main\" service name")
+                raise ValueError(
+                    'the id of the service must be the same as the "main" service name'
+                )
         return self
 
 
