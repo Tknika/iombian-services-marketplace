@@ -20,7 +20,7 @@ services:
 
       com.iombian-updatable-services-handler.env.CONFIG_PORT.name: "Config port"
       com.iombian-updatable-services-handler.env.CONFIG_PORT.description: "The port of the IoMBian Config File Handler."
-      com.iombian-updatable-services-handler.env.CONFIG_PORT.type: "integer:1024:65535"
+      com.iombian-updatable-services-handler.env.CONFIG_PORT.type: "integer:1024;65535"
       com.iombian-updatable-services-handler.env.CONFIG_PORT.default: "5555"
 
       com.iombian-updatable-services-handler.env.LOG_LEVEL.name: "Log level"
