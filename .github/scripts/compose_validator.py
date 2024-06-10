@@ -127,7 +127,7 @@ class Service(BaseModel):
                             float(default_value)
                         elif env_type == "boolean":
                             if default_value != "true" and default_value != "false":
-                                raise ValueError('boolea must be "true" or "false"')
+                                raise ValueError('boolean must be "true" or "false"')
 
                     elif len(type_value.split(":")) == 2:
                         if env_type == "integer":
@@ -172,7 +172,7 @@ class Service(BaseModel):
 
                             if re.fullmatch(regex, default_value) is None:
                                 raise ValueError(
-                                    "defualt string value must match the given regex"
+                                    "default string value must match the given regex"
                                 )
 
                         elif env_type == "enum":
