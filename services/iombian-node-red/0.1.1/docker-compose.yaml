@@ -3,6 +3,8 @@ services:
     image: ghcr.io/tknika/iombian-node-red:0.1.1
     container_name: iombian-node-red
     restart: unless-stopped
+    volumes:
+      - ./data:/data:rw
     networks:
       - iombian-external-services
     ports:
