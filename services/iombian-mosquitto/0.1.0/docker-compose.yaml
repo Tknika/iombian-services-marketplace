@@ -1,0 +1,57 @@
+services:
+  iombian-mosquitto:
+    image: ghcr.io/tknika/iombian-mosquitto:0.1.0
+    container_name: iombian-mosquitto
+    restart: unless-stopped
+    networks:
+      - iombian-external-services
+    ports:
+      - "${MQTT_PORT}:1883"
+      - "${WEBSOCKETS_PORT}:8000"
+    environment:
+      - "USER1_USERNAME=${USER1_USERNAME}"
+      - "USER1_PASSWORD=${USER1_PASSWORD}"
+      - "ALLOW_ANONYMOUS=${ALLOW_ANONYMOUS}"
+      - "WEBSOCKETS_ENABLED=${WEBSOCKETS_ENABLED}"
+    labels:
+      com.iombian-mosquitto.service.id: "iombian-mosquitto"
+      com.iombian-mosquitto.service.name: "IoMBian Mosquitto"
+      com.iombian-mosquitto.service.author: "IoMBian team"
+      com.iombian-mosquitto.service.version: "0.1.0"
+      com.iombian-mosquitto.service.description: "Custom container that deploys and configures a Mosquitto broker very easily."
+      com.iombian-mosquitto.service.changelog: "First version."
+      com.iombian-mosquitto.service.documentation_url: ""
+
+      com.iombian-mosquitto.env.MQTT_PORT.name: "MQTT port"
+      com.iombian-mosquitto.env.MQTT_PORT.description: "Port where Mosquitto will listen for TCP connections."
+      com.iombian-mosquitto.env.MQTT_PORT.type: "integer:1024;65535"
+      com.iombian-mosquitto.env.MQTT_PORT.default: "1883"
+
+      com.iombian-mosquitto.env.WEBSOCKETS_PORT.name: "Websockets port"
+      com.iombian-mosquitto.env.WEBSOCKETS_PORT.description: "Port where Mosquitto will listen for Websockets connections."
+      com.iombian-mosquitto.env.WEBSOCKETS_PORT.type: "integer:1024;65535"
+      com.iombian-mosquitto.env.WEBSOCKETS_PORT.default: "8000"
+
+      com.iombian-mosquitto.env.WEBSOCKETS_ENABLED.name: "Websockets enabled"
+      com.iombian-mosquitto.env.WEBSOCKETS_ENABLED.description: "Websockets connections should be enabled or not."
+      com.iombian-mosquitto.env.WEBSOCKETS_ENABLED.type: "boolean"
+      com.iombian-mosquitto.env.WEBSOCKETS_ENABLED.default: "true"
+
+      com.iombian-mosquitto.env.ALLOW_ANONYMOUS.name: "Allow anonymous"
+      com.iombian-mosquitto.env.ALLOW_ANONYMOUS.description: "Anonymous connections (no auth) should be enabled or not."
+      com.iombian-mosquitto.env.ALLOW_ANONYMOUS.type: "boolean"
+      com.iombian-mosquitto.env.ALLOW_ANONYMOUS.default: "false"
+
+      com.iombian-mosquitto.env.USER1_USERNAME.name: "Authentication username"
+      com.iombian-mosquitto.env.USER1_USERNAME.description: "Username for the authenticated user."
+      com.iombian-mosquitto.env.USER1_USERNAME.type: "string"
+      com.iombian-mosquitto.env.USER1_USERNAME.default: "iompi"
+
+      com.iombian-mosquitto.env.USER1_PASSWORD.name: "Authentication password"
+      com.iombian-mosquitto.env.USER1_PASSWORD.description: "Password for the authenticated user."
+      com.iombian-mosquitto.env.USER1_PASSWORD.type: "string:1;"
+      com.iombian-mosquitto.env.USER1_PASSWORD.default: "iompi"
+
+networks:
+  iombian-external-services:
+    external: true
