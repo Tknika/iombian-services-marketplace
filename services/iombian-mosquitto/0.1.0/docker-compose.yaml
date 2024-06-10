@@ -9,10 +9,10 @@ services:
       - "${MQTT_PORT}:1883"
       - "${WEBSOCKETS_PORT}:8000"
     environment:
-      - "USER1_USERNAME=${USER1_USERNAME}"
-      - "USER1_PASSWORD=${USER1_PASSWORD}"
-      - "ALLOW_ANONYMOUS=${ALLOW_ANONYMOUS}"
-      - "WEBSOCKETS_ENABLED=${WEBSOCKETS_ENABLED}"
+      USER1_USERNAME: ${USER1_USERNAME}
+      USER1_PASSWORD: ${USER1_PASSWORD}
+      ALLOW_ANONYMOUS: ${ALLOW_ANONYMOUS}
+      WEBSOCKETS_ENABLED: ${WEBSOCKETS_ENABLED}
     labels:
       com.iombian-mosquitto.service.id: "iombian-mosquitto"
       com.iombian-mosquitto.service.name: "IoMBian Mosquitto"
