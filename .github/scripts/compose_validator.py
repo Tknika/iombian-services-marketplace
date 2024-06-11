@@ -164,7 +164,8 @@ class Service(BaseModel):
 
                         elif env_type == "string":
                             hidden = type_value[6:9]
-                            regex = type_value[:9]
+                            regex = type_value[9:]
+                            regex = ".*" if regex == "" else regex
 
                             if hidden != ":0;" and hidden != ":1;":
                                 raise ValueError("invalid string type definition")
