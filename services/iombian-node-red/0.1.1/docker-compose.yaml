@@ -7,7 +7,6 @@ services:
       - ./data:/data:rw
     networks:
       - iombian-external-services
-      - iombian-internal-services
     ports:
       - ${WEB_INTERFACE_PORT}:1880
     environment:
@@ -51,6 +50,4 @@ services:
 
 networks:
   iombian-external-services:
-    external: true
-  iombian-internal-services:
     external: true
