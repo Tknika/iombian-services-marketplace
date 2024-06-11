@@ -43,12 +43,12 @@ services:
       com.iombian-mosquitto.env.ALLOW_ANONYMOUS.default: "false"
 
       com.iombian-mosquitto.env.USER1_USERNAME.name: "Authentication username"
-      com.iombian-mosquitto.env.USER1_USERNAME.description: "Username for the authenticated user."
+      com.iombian-mosquitto.env.USER1_USERNAME.description: "Username for the authentication user."
       com.iombian-mosquitto.env.USER1_USERNAME.type: "string"
       com.iombian-mosquitto.env.USER1_USERNAME.default: "iompi"
 
       com.iombian-mosquitto.env.USER1_PASSWORD.name: "Authentication password"
-      com.iombian-mosquitto.env.USER1_PASSWORD.description: "Password for the authenticated user."
+      com.iombian-mosquitto.env.USER1_PASSWORD.description: "Password for the authentication user."
       com.iombian-mosquitto.env.USER1_PASSWORD.type: "string:1;"
       com.iombian-mosquitto.env.USER1_PASSWORD.default: "iompi"
 
