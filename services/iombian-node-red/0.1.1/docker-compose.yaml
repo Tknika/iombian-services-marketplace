@@ -1,0 +1,53 @@
+services:
+  iombian-node-red:
+    image: ghcr.io/tknika/iombian-node-red:0.1.1
+    container_name: iombian-node-red
+    restart: unless-stopped
+    volumes:
+      - ./data:/data:rw
+    networks:
+      - iombian-external-services
+    ports:
+      - ${WEB_INTERFACE_PORT}:1880
+    environment:
+      AUTH_ENABLED: ${AUTH_ENABLED}
+      AUTH_USER_USERNAME: ${AUTH_USER_USERNAME}
+      AUTH_USER_PASSWORD: ${AUTH_USER_PASSWORD}
+      AUTH_USER_PERMISSIONS: ${AUTH_USER_PERMISSIONS}
+    labels:
+      com.iombian-node-red.service.id: "iombian-node-red"
+      com.iombian-node-red.service.name: "IoMBian Node-RED"
+      com.iombian-node-red.service.author: "IoMBian team"
+      com.iombian-node-red.service.version: "0.1.1"
+      com.iombian-node-red.service.description: "Custom container that deploys and configures Node-RED very easily."
+      com.iombian-node-red.service.changelog: "First version."
+      com.iombian-node-red.service.documentation_url: ""
+
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.name: "Web interface port"
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.description: "Port where Node-RED will listen for web connections."
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.type: "integer:1024;65535"
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.default: "1880"
+
+      com.iombian-node-red.env.AUTH_ENABLED.name: "Auth enabled"
+      com.iombian-node-red.env.AUTH_ENABLED.description: "Node-RED web authentication should be enabled or not."
+      com.iombian-node-red.env.AUTH_ENABLED.type: "boolean"
+      com.iombian-node-red.env.AUTH_ENABLED.default: "true"
+
+      com.iombian-node-red.env.AUTH_USER_USERNAME.name: "Authentication username"
+      com.iombian-node-red.env.AUTH_USER_USERNAME.description: "Username for the Node-RED web authentication."
+      com.iombian-node-red.env.AUTH_USER_USERNAME.type: "string"
+      com.iombian-node-red.env.AUTH_USER_USERNAME.default: "iompi"
+
+      com.iombian-node-red.env.AUTH_USER_PASSWORD.name: "Authentication password"
+      com.iombian-node-red.env.AUTH_USER_PASSWORD.description: "Password for the Node-RED web authentication."
+      com.iombian-node-red.env.AUTH_USER_PASSWORD.type: "string:1;"
+      com.iombian-node-red.env.AUTH_USER_PASSWORD.default: "iompi"
+
+      com.iombian-node-red.env.AUTH_USER_PERMISSIONS.name: "Authentication permissions"
+      com.iombian-node-red.env.AUTH_USER_PERMISSIONS.description: "Permissions for the Node-RED web authentication."
+      com.iombian-node-red.env.AUTH_USER_PERMISSIONS.type: "enum:*,read"
+      com.iombian-node-red.env.AUTH_USER_PERMISSIONS.default: "*"
+
+networks:
+  iombian-external-services:
+    external: true
