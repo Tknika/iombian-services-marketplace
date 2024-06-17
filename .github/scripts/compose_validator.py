@@ -127,17 +127,6 @@ class Service(BaseModel):
                             f"invalid environment variable type: {env_type}.\nEnvironment variable type must be {', '.join(VALID_TYPES[:-1])} or {VALID_TYPES[-1]}."
                         )
 
-                    # if ":" not in type_value:
-                    #     if env_type == "integer":
-                    #         int(default_value)
-                    #     elif env_type == "float":
-                    #         float(default_value)
-                    #     elif env_type == "boolean":
-                    #         if default_value != "true" and default_value != "false":
-                    #             raise ValueError(
-                    #                 f'boolean "{default_value}" must be "true" or "false"'
-                    #             )
-
                     if env_type == "integer":
 
                         try:
