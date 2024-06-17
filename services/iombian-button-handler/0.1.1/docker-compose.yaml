@@ -1,4 +1,4 @@
-services:
+srvices:
   iombian-button-handler:
     image: ghcr.io/tknika/iombian-button-handler:0.1.0
     container_name: iombian-button-handler
@@ -28,7 +28,7 @@ services:
       com.iombian-button-handler.env.BUTTON_PIN.name: "Button pin"
       com.iombian-button-handler.env.BUTTON_PIN.description: "The GPIO pin where the button is connected."
       com.iombian-button-handler.env.BUTTON_PIN.type: "integer:1;40"
-      com.iombian-button-handler.env.BUTTON_PIN.default: "3"
+      com.iombian-button-handler.env.BUTTON_PIN.default: "50"
 
       com.iombian-button-handler.env.LOG_LEVEL.name: "Log level"
       com.iombian-button-handler.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
