@@ -12,7 +12,7 @@ def parse_error_message(exception: Exception):
         lines = error.split("\n")
         error_message = lines[-2]
 
-        return f"Error in docker compose structure:\n{error_message}"
+        return f"Error in docker compose structure:{error_message}"
 
     elif isinstance(exception, ValidationError):
         error_messages = [message["msg"] for message in exception.errors()]
