@@ -20,7 +20,8 @@ def parse_error_message(exception: Exception):
             error_message = error_messages[0]
         else:
             error_count = exception.error_count()
-            error_message = f"{error_count} errors found while validating the service\n{'\n'.join(error_messages)}"
+            all_errors = '\n'.join(error_messages)
+            error_message = f"{error_count} errors found while validating the service\n{all_errors}"
 
         return error_message
     else:
