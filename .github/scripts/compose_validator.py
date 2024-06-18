@@ -1,3 +1,4 @@
+import enum
 import re
 from typing import Any, Dict, List, Literal, TypeAlias, TypeVar
 
@@ -13,15 +14,20 @@ Networks: TypeAlias = Dict[
     Dict[Literal["external"], bool],
 ]
 
+VALID_TYPES = ["integer", "float", "string", "boolean", "enum"]
 
-def env_has_labels(env_var: str, labels: Dict[str, str], service: str):
-    """Given a environment variable, checks if it has its respective labels."""
+
+def get_missing_label(env_var: str, labels: Dict[str, str], service: str):
+    """Get the missing label of the given environment variable.
+
+    If the variable has a missing label, the name of that label will be returned.
+    In another case, return an empty string"""
     env_info = ["name", "description", "type", "default"]
     for info in env_info:
         label_key = f"com.{service}.env.{env_var}.{info}"
         if labels.get(label_key) is None:
-            return False
-    return True
+            return info
+    return ""
 
 
 def get_vars_from_string(string: str):
@@ -59,7 +65,7 @@ class Service(BaseModel):
         for label in labels:
             namespace = label.split(".")[0]
             if namespace != "com":
-                raise ValueError('label must start with "com"')
+                raise ValueError(f'label "{label}" must start with "com"')
         return labels
 
     @field_validator("labels")
@@ -69,7 +75,7 @@ class Service(BaseModel):
         for label in labels:
             label_type = label.split(".")[2]
             if label_type != "service" and label_type != "env":
-                raise ValueError('label type must be "service" or "env"')
+                raise ValueError(f'label "{label}" type must be "service" or "env"')
         return labels
 
     @field_validator("labels")
@@ -109,81 +115,108 @@ class Service(BaseModel):
                     type_value = labels[label]
                     default_key = f"com.{service}.env.{env_name}.default"
                     default_value = labels[default_key]
-                    env_type = type_value.split(":")[0]
 
-                    if env_type not in [
-                        "integer",
-                        "float",
-                        "string",
-                        "boolean",
-                        "enum",
-                    ]:
-                        raise ValueError("invalid variable type")
+                    if ":" not in type_value:
+                        env_type = type_value
+                        env_constraint = None
+                    else:
+                        env_type, env_constraint = type_value.split(":", 1)
 
-                    if len(type_value.split(":")) == 1:
-                        if env_type == "integer":
-                            int(default_value)
-                        elif env_type == "float":
-                            float(default_value)
-                        elif env_type == "boolean":
-                            if default_value != "true" and default_value != "false":
-                                raise ValueError('boolean must be "true" or "false"')
+                    if env_type not in VALID_TYPES:
+                        raise ValueError(
+                            f"invalid environment variable type: {env_type}.\nEnvironment variable type must be {', '.join(VALID_TYPES[:-1])} or {VALID_TYPES[-1]}."
+                        )
 
-                    elif len(type_value.split(":")) == 2:
-                        if env_type == "integer":
-                            min_max = type_value.split(":")[1]
-                            try:
-                                min = int(min_max.split(";")[0])
-                                max = int(min_max.split(";")[1])
-                            except IndexError:
-                                raise ValueError(
-                                    "min and max must be separated by a semicolon \";\""
-                                )
+                    if env_type == "integer":
 
+                        try:
                             default_value = int(default_value)
-                            if not min <= default_value <= max:
+                        except ValueError:
+                            raise ValueError(
+                                f'default value "{default_value}" must be an integer'
+                            )
+
+                        if env_constraint is not None:
+                            if ";" not in env_constraint:
                                 raise ValueError(
-                                    "default integer value must be in the given range"
+                                    f'min and max must be separated by a semicolon ";": {env_constraint}'
                                 )
 
-                        elif env_type == "float":
-                            min_max = type_value.split(":")[1]
+                            [min, max] = env_constraint.split(";", 1)
+
                             try:
-                                min = float(min_max.split(";")[0])
-                                max = float(min_max.split(";")[1])
-                            except IndexError:
-                                raise ValueError(
-                                    "min and max must be separated by a semicolon \";\""
-                                )
+                                min = int(min)
+                            except ValueError:
+                                raise ValueError(f"min must be an integer: {min}")
 
-                            default_value = float(default_value)
+                            try:
+                                max = int(max)
+                            except ValueError:
+                                raise ValueError(f"max must be an integer: {max}")
+
                             if not min <= default_value <= max:
                                 raise ValueError(
-                                    "default integer value must be in the given range"
+                                    f'default value "{default_value}" must be in the given range: [{min}, {max}]'
                                 )
 
-                        elif env_type == "string":
-                            hidden = type_value[6:9]
-                            regex = type_value[9:]
+                    elif env_type == "float":
+                        try:
+                            default_value = float(default_value)
+                        except ValueError:
+                            raise ValueError(
+                                f'default value "{default_value}" must be a float'
+                            )
+
+                        if env_constraint is not None:
+                            if ";" not in env_constraint:
+                                raise ValueError(
+                                    f'min and max must be separated by a semicolon ";": {env_constraint}'
+                                )
+
+                            [min, max] = env_constraint.split(";", 1)
+
+                            try:
+                                min = float(min)
+                            except ValueError:
+                                raise ValueError(f"min must be a float: {min}")
+
+                            try:
+                                max = float(max)
+                            except ValueError:
+                                raise ValueError(f"max must be a float: {max}")
+
+                            if not min <= default_value <= max:
+                                raise ValueError(
+                                    f'default value "{default_value}" must be in the given range: [{min}, {max}]'
+                                )
+
+                    elif env_type == "string":
+                        if env_constraint is not None:
+                            hidden = env_constraint[:2]
+                            regex = env_constraint[2:]
                             regex = ".*" if regex == "" else regex
 
-                            if hidden != ":0;" and hidden != ":1;":
-                                raise ValueError("invalid string type definition")
+                            if hidden != "0;" and hidden != "1;":
+                                raise ValueError(
+                                    f'invalid string type definition: "{type_value}"\nShow (0;) or hidden (1;) must be defined'
+                                )
 
                             if re.fullmatch(regex, default_value) is None:
                                 raise ValueError(
-                                    "default string value must match the given regex"
+                                    f'default string "{default_value}" must match the given regex: {regex}'
                                 )
 
-                        elif env_type == "enum":
-                            enum_values = type_value.split(":")[1]
-                            enum_values = enum_values.split(",")
-                            if default_value not in enum_values:
-                                raise ValueError(
-                                    "default enum value must be part of the enum"
-                                )
-                    else:
-                        raise ValueError('variable type can only have one colon ":"')
+                    elif env_type == "enum":
+                        if not env_constraint:
+                            raise ValueError(
+                                f'enum must have at least one option: "{type_value}"'
+                            )
+
+                        enum_values = env_constraint.split(",")
+                        if default_value not in enum_values:
+                            raise ValueError(
+                                f'default enum value "{default_value}" must be part of the enum: {enum_values}'
+                            )
 
         return labels
 
@@ -197,7 +230,7 @@ class Service(BaseModel):
             label_service = label.split(".")[1]
             if label_service != self.container_name:
                 raise ValueError(
-                    "container_name and label service name must be the same"
+                    f'container_name "{self.container_name}" and label service "{label_service}" name must be the same'
                 )
         return self
 
@@ -232,10 +265,14 @@ class Service(BaseModel):
                 all_vars += env_value_vars
 
         for var in all_vars:
-            if not self.labels or not env_has_labels(
-                var, self.labels, self.container_name
-            ):
-                raise ValueError(f"environment variable {var} has no labels")
+            if not self.labels:
+                raise ValueError(f"service has no labels")
+
+            missing_label = get_missing_label(var, self.labels, self.container_name)
+            if missing_label != "":
+                raise ValueError(
+                    f'environment variable "{var}" has no label "{missing_label}"'
+                )
 
         return self
 
@@ -255,12 +292,12 @@ class DockerCompose(BaseModel):
         networks = list(values.keys())
 
         if len(networks) != 1:
-            raise ValueError("Can only have one network")
+            raise ValueError("service can only have one network")
         network = networks.pop()
 
         external = values[network]["external"]
         if not external:
-            raise ValueError("The network must be external")
+            raise ValueError("the network must be external")
 
         return values
 
@@ -271,7 +308,9 @@ class DockerCompose(BaseModel):
         for service in services:
             container_name = services[service].container_name
             if container_name != service:
-                raise ValueError("service name and container name msut be the same.")
+                raise ValueError(
+                    f'service name "{service}" and container name "{container_name}" must be the same'
+                )
         return services
 
     @model_validator(mode="after")
@@ -285,7 +324,7 @@ class DockerCompose(BaseModel):
         ]
         if len(services_with_service_name) != 1:
             raise ValueError(
-                "service must contain one docker service with the same name"
+                f'service "{self.service_name}" must contain one docker service with the same name'
             )
 
         main_service = self.services[services_with_service_name[0]]
@@ -301,14 +340,14 @@ class DockerCompose(BaseModel):
         for info in service_info:
             label_key = f"com.{self.service_name}.service.{info}"
             if not main_service.labels:
-                raise ValueError("main service must have labels")
+                raise ValueError("main service must have the service labels labels")
 
             if main_service.labels.get(label_key) is None:
-                raise ValueError(f"main service labels must contain {info}")
+                raise ValueError(f'main service labels must contain "{info}"')
 
             if info == "id" and main_service.labels.get(label_key) != self.service_name:
                 raise ValueError(
-                    'the id of the service must be the same as the "main" service name'
+                    f'the id of the service "{self.service_name}" must be the same as the main service name "{main_service.labels.get(label_key)}"'
                 )
         return self
 
