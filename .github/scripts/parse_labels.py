@@ -20,6 +20,7 @@ def parse_labels(docker_compose: dict, service_name: str) -> Dict[str, ParsedLab
     """Given the docker-compose in dict/json form, return the label information."""
     services = docker_compose["services"]
     parsed_labels = {}
+    env_order = 0
 
     for service in services:
         service_labels = {}
@@ -45,6 +46,8 @@ def parse_labels(docker_compose: dict, service_name: str) -> Dict[str, ParsedLab
 
                 if not service_labels["envs"].get(env_name):
                     service_labels["envs"][env_name] = {}
+                    service_labels["envs"][env_name]["order"] = str(env_order)
+                    env_order += 1
 
                 env_metadata_key = splitted_label[4]
                 service_labels["envs"][env_name][env_metadata_key] = value
