@@ -246,7 +246,7 @@ services:
             com.iombian-example-service.service.changelog: "First release."
             com.iombian-example-service.service.documentation_url: "url/to/documentation"
 
-            com.iombian-example-service.env.PORT_ENV.name: "Port env"
+            com.iombian-example-service.env.BUTTON_EVENTS_PORT.name: "Port env"
             com.iombian-example-service.env.BUTTON_EVENTS_PORT.description: "Example functionality of Port env."
             com.iombian-example-service.env.BUTTON_EVENTS_PORT.type: "integer"
             com.iombian-example-service.env.BUTTON_EVENTS_PORT.default: "5555"
