@@ -17,7 +17,7 @@ class ParsedLabels(TypedDict):
 
 
 def parse_labels(docker_compose: dict, service_name: str) -> Dict[str, ParsedLabels]:
-    """Given the docker-compose in dict/json form, return the label information."""
+    """Given the docker-compose in dict/json form, return the label information and label order."""
     services = docker_compose["services"]
     parsed_labels = {}
     env_order = 0
