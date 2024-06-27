@@ -1,6 +1,6 @@
 # IoMBian Marketplace Standard
 
-### 0.1.2
+### 0.1.3
 
 This is the standard to follow when uploading services to the IoMBian Services Marketplace. 
 
@@ -155,6 +155,7 @@ com.iombian-button-handler.service.documentation_url: "https://github.com/Tknika
 The environment variables will also have some tags with metadata.
 This metadata will be used by the iombian-configurator to generate the forms needed for input.
 Like this, you can change some values of a service from the configurator.
+The form inputs will appear in the same order in which the labels appear in the file.
 
 The labels will refer to the environment variables defined with ${}, not the ones in the environment section.
 This means, having this example:
