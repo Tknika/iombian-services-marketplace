@@ -25,15 +25,15 @@ services:
       com.iombian-config-file-handler.service.changelog: "Update to standard version 0.1.2."
       com.iombian-config-file-handler.service.documentation_url: ""
 
-      com.iombian-config-file-handler.env.CONFIG_PORT.name: "Configuration port"
-      com.iombian-config-file-handler.env.CONFIG_PORT.description: "Port through which other services will set and access the configuration."
-      com.iombian-config-file-handler.env.CONFIG_PORT.type: "integer:1024;65535"
-      com.iombian-config-file-handler.env.CONFIG_PORT.default: "5555"
-
       com.iombian-config-file-handler.env.RESET_EVENT.name: "Reset event"
       com.iombian-config-file-handler.env.RESET_EVENT.description: "Button event that will trigger the device to reset."
       com.iombian-config-file-handler.env.RESET_EVENT.type: "enum:double_click,triple_click,many_click,long_click,long_long_click"
       com.iombian-config-file-handler.env.RESET_EVENT.default: "long_long_click"
+
+      com.iombian-config-file-handler.env.CONFIG_PORT.name: "Configuration port"
+      com.iombian-config-file-handler.env.CONFIG_PORT.description: "Port through which other services will set and access the configuration."
+      com.iombian-config-file-handler.env.CONFIG_PORT.type: "integer:1024;65535"
+      com.iombian-config-file-handler.env.CONFIG_PORT.default: "5555"
 
       com.iombian-config-file-handler.env.BUTTON_EVENTS_PORT.name: "Button events port"
       com.iombian-config-file-handler.env.BUTTON_EVENTS_PORT.description: "The port where the button events will be published."
