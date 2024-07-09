@@ -23,11 +23,6 @@ services:
       com.iombian-node-red.service.changelog: "First version."
       com.iombian-node-red.service.documentation_url: ""
 
-      com.iombian-node-red.env.WEB_INTERFACE_PORT.name: "Web interface port"
-      com.iombian-node-red.env.WEB_INTERFACE_PORT.description: "Port where Node-RED will listen for web connections."
-      com.iombian-node-red.env.WEB_INTERFACE_PORT.type: "integer:1024;65535"
-      com.iombian-node-red.env.WEB_INTERFACE_PORT.default: "1880"
-
       com.iombian-node-red.env.AUTH_ENABLED.name: "Auth enabled"
       com.iombian-node-red.env.AUTH_ENABLED.description: "Node-RED web authentication should be enabled or not."
       com.iombian-node-red.env.AUTH_ENABLED.type: "boolean"
@@ -47,6 +42,11 @@ services:
       com.iombian-node-red.env.AUTH_USER_PERMISSIONS.description: "Permissions for the Node-RED web authentication."
       com.iombian-node-red.env.AUTH_USER_PERMISSIONS.type: "enum:*,read"
       com.iombian-node-red.env.AUTH_USER_PERMISSIONS.default: "*"
+
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.name: "Web interface port"
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.description: "Port where Node-RED will listen for web connections."
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.type: "integer:1024;65535"
+      com.iombian-node-red.env.WEB_INTERFACE_PORT.default: "1880"
 
 networks:
   iombian-external-services:
