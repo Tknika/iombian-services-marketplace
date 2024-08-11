@@ -1,0 +1,33 @@
+services:
+  iombian-remote-configurator:
+    image: ghcr.io/tknika/iombian-remote-configurator:0.1.0
+    container_name: iombian-remote-configurator
+    restart: unless-stopped
+    networks:
+      - iombian-internal-services
+    environment:
+      CONFIG_HOST: "iombian-config-file-handler"
+      CONFIG_PORT: ${CONFIG_PORT}
+      LOG_LEVEL: ${LOG_LEVEL}
+    labels:
+      com.iombian-remote-configurator.service.id: "iombian-remote-configurator"
+      com.iombian-remote-configurator.service.name: "IoMBian Remote Configurator"
+      com.iombian-remote-configurator.service.author: "IoMBian team"
+      com.iombian-remote-configurator.service.version: "0.1.0"
+      com.iombian-remote-configurator.service.description: "Remote Configurator. The service synchronizes the device configuration with Firebase and allows push configurations."
+      com.iombian-remote-configurator.service.changelog: "First release"
+      com.iombian-remote-configurator.service.documentation_url: ""
+
+      com.iombian-remote-configurator.env.CONFIG_PORT.name: "Config port"
+      com.iombian-remote-configurator.env.CONFIG_PORT.description: "The port of the IoMBian Config File Handler."
+      com.iombian-remote-configurator.env.CONFIG_PORT.type: "integer:1024;65535"
+      com.iombian-remote-configurator.env.CONFIG_PORT.default: "5555"
+
+      com.iombian-remote-configurator.env.LOG_LEVEL.name: "Log level"
+      com.iombian-remote-configurator.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
+      com.iombian-remote-configurator.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
+      com.iombian-remote-configurator.env.LOG_LEVEL.default: "INFO"
+
+networks:
+  iombian-internal-services:
+    external: true
