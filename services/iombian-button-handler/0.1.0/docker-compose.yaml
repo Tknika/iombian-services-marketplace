@@ -12,6 +12,7 @@ services:
       BUTTON_PIN: ${BUTTON_PIN}
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-button-handler.service.id: "iombian-button-handler"
       com.iombian-button-handler.service.name: "IoMBian Button Handler"
       com.iombian-button-handler.service.author: "Aitor Castaño"
       com.iombian-button-handler.service.version: "0.1.0"

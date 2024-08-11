@@ -6,7 +6,7 @@ services:
     volumes:
       - /boot/config/parameters.yml:/app/parameters.yml
     networks:
-      - iombian-internal-services 
+      - iombian-internal-services
     ports:
       - ${CONFIG_PORT}:5555
     environment:
@@ -17,9 +17,10 @@ services:
       SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT}
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-config-file-handler.service.id: "iombian-config-file-handler"
       com.iombian-config-file-handler.service.name: "IoMBian Config File Handler"
       com.iombian-config-file-handler.service.author: "Aitor Castaño"
-      com.iombian-config-file-handler.service.version: "0.1.0" 
+      com.iombian-config-file-handler.service.version: "0.1.0"
       com.iombian-config-file-handler.service.description: "Configuration file handler. Receives commands for configuration and also handles rebooting the device through an event."
       com.iombian-config-file-handler.service.changelog: "First release."
       com.iombian-config-file-handler.service.documentation_url: ""

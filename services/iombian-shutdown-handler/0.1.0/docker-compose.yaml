@@ -13,12 +13,13 @@ services:
       SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT}
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-shutdown-handler.service.id: "iombian-shutdown-handler"
       com.iombian-shutdown-handler.service.name: "IoMBian Shutdown Handler"
       com.iombian-shutdown-handler.service.author: "Aitor Castaño"
       com.iombian-shutdown-handler.service.version: "0.1.0"
       com.iombian-shutdown-handler.service.description: "Handles shutdown by listening to button events and sending shutdown commands."
       com.iombian-shutdown-handler.service.changelog: "First release."
-      com.iombian-shutdown-handler.service.documentation-url: ""
+      com.iombian-shutdown-handler.service.documentation_url: ""
 
       com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.name: "Shutdown event"
       com.iombian-shutdown-handler.env.SHUTDOWN_EVENT.description: "Event that will trigger the device to shutdown."

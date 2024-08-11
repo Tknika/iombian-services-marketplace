@@ -15,6 +15,7 @@ services:
       WAIT_SECONDS: 1
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-installed-services-handler.service.id: "iombian-installed-services-handler"
       com.iombian-installed-services-handler.service.name: "IoMBian installed services handler"
       com.iombian-installed-services-handler.service.author: "IoMBian team"
       com.iombian-installed-services-handler.service.version: "0.1.0"

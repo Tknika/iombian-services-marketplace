@@ -15,6 +15,7 @@ services:
     environment:
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-shutdown-service.service.id: "iombian-shutdown-service"
       com.iombian-shutdown-service.service.name: "IoMBian Shutdown Service"
       com.iombian-shutdown-service.service.author: "Aitor Castaño"
       com.iombian-shutdown-service.service.version: "0.1.0"
