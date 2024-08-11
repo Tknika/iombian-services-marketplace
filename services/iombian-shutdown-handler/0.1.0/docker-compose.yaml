@@ -13,6 +13,7 @@ services:
       SHUTDOWN_SERVICE_PORT: ${SHUTDOWN_SERVICE_PORT}
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-shutdown-handler.service.id: "iombian-shutdown-handler"
       com.iombian-shutdown-handler.service.name: "IoMBian Shutdown Handler"
       com.iombian-shutdown-handler.service.author: "Aitor Castaño"
       com.iombian-shutdown-handler.service.version: "0.1.0"

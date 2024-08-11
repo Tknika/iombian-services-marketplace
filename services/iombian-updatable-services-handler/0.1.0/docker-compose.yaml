@@ -10,6 +10,7 @@ services:
       CONFIG_PORT: ${CONFIG_PORT}
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-updatable-services-handler.service.id: "iombian-updatable-services-handler"
       com.iombian-updatable-services-handler.service.name: "IoMBian Updatable Services Handler"
       com.iombian-updatable-services-handler.service.author: "IoMBian team"
       com.iombian-updatable-services-handler.service.version: "0.1.0"

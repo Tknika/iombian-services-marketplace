@@ -13,6 +13,7 @@ services:
       BASE_PATH: /opt/iombian-services
       LOG_LEVEL: ${LOG_LEVEL}
     labels:
+      com.iombian-installed-services-downloader.service.id: "iombian-installed-services-downloader"
       com.iombian-installed-services-downloader.service.name: "IoMBian Installed Services Downloader"
       com.iombian-installed-services-downloader.service.author: "Aitor Castaño"
       com.iombian-installed-services-downloader.service.version: "0.1.0"
