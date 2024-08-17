@@ -11,6 +11,8 @@ services:
       - /usr/bin/docker:/usr/bin/docker
       - /usr/libexec/docker/cli-plugins/docker-compose:/usr/libexec/docker/cli-plugins/docker-compose
     environment:
+      CONFIG_HOST: "iombian-config-file-handler"
+      CONFIG_PORT: ${CONFIG_PORT}
       BASE_PATH: /opt/iombian-services
       WAIT_SECONDS: 1
       LOG_LEVEL: ${LOG_LEVEL}
@@ -22,6 +24,11 @@ services:
       com.iombian-installed-services-handler.service.description: "Checks the downloaded services and starts/stops the composes automatically."
       com.iombian-installed-services-handler.service.changelog: "Improve service stability."
       com.iombian-installed-services-handler.service.documentation_url: ""
+
+      com.iombian-installed-services-handler.env.CONFIG_PORT.name: "Config port"
+      com.iombian-installed-services-handler.env.CONFIG_PORT.description: "The port of the IoMBian Config File Handler."
+      com.iombian-installed-services-handler.env.CONFIG_PORT.type: "integer:1024;65535"
+      com.iombian-installed-services-handler.env.CONFIG_PORT.default: "5555"
 
       com.iombian-installed-services-handler.env.LOG_LEVEL.name: "Log level"
       com.iombian-installed-services-handler.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
