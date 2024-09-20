@@ -17,7 +17,6 @@ services:
     labels:
       com.iombian-shutdown-service.service.id: "iombian-shutdown-service"
       com.iombian-shutdown-service.service.name: "IoMBian Shutdown Service"
-      com.iombian-shutdown-service.service.author: "IoMBian team"
       com.iombian-shutdown-service.service.version: "0.1.2"
       com.iombian-shutdown-service.service.description: "IoMBian shutdown and reboot service. Receives commands for shutting down and rebooting the device."
       com.iombian-shutdown-service.service.changelog: "Break service for demo."
