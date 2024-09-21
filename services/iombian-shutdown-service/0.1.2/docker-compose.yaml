@@ -2,12 +2,11 @@ services:
   iombian-shutdown-service:
     image: ghcr.io/tknika/iombian-shutdown-service:0.1.0
     container_name: iombian-shutdown-service
-    privileged: false
+    privileged: true
     restart: unless-stopped
     volumes:
       - /run/systemd/system:/run/systemd/system
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
-      - /bin/systemctl:/bin/systemctl
     networks:
       - iombian-internal-services
     ports:
