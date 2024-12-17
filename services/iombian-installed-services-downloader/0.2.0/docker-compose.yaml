@@ -1,0 +1,36 @@
+services:
+  iombian-installed-services-downloader:
+    image: ghcr.io/bodiroga/iombian-installed-services-downloader:sha-ba7c0b5
+    container_name: iombian-installed-services-downloader
+    restart: unless-stopped
+    networks:
+      - iombian-internal-services
+    volumes:
+      - /opt/iombian-services:/opt/iombian-services
+    environment:
+      CONFIG_HOST: "iombian-config-file-handler"
+      CONFIG_PORT: ${CONFIG_PORT}
+      BASE_PATH: /opt/iombian-services
+      LOG_LEVEL: ${LOG_LEVEL}
+    labels:
+      com.iombian-installed-services-downloader.service.id: "iombian-installed-services-downloader"
+      com.iombian-installed-services-downloader.service.name: "IoMBian Installed Services Downloader"
+      com.iombian-installed-services-downloader.service.author: "IoMBian team"
+      com.iombian-installed-services-downloader.service.version: "0.2.0"
+      com.iombian-installed-services-downloader.service.description: "Download the services from firebase to sync the firebase installed services and the local installed services."
+      com.iombian-installed-services-downloader.service.changelog: "Improve service stability."
+      com.iombian-installed-services-downloader.service.documentation_url: ""
+
+      com.iombian-installed-services-downloader.env.CONFIG_PORT.name: "Config port"
+      com.iombian-installed-services-downloader.env.CONFIG_PORT.description: "The port of the IoMBian Config File Handler."
+      com.iombian-installed-services-downloader.env.CONFIG_PORT.type: "integer:1024;65535"
+      com.iombian-installed-services-downloader.env.CONFIG_PORT.default: "5555"
+
+      com.iombian-installed-services-downloader.env.LOG_LEVEL.name: "Log level"
+      com.iombian-installed-services-downloader.env.LOG_LEVEL.description: "Log level of the application (INFO, DEBUG, ...)."
+      com.iombian-installed-services-downloader.env.LOG_LEVEL.type: "enum:DEBUG,INFO,WARN,ERROR"
+      com.iombian-installed-services-downloader.env.LOG_LEVEL.default: "INFO"
+
+networks:
+  iombian-internal-services:
+    external: true
